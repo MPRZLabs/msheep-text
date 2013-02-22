@@ -1,7 +1,8 @@
-/jline/
-/textline_alpha1.zip
-/textline_beta1.zip
-/build/
-/dist/
 /nbproject/private/
-/lib/apidocs/
+
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
