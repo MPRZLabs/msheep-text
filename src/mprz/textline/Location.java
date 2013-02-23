@@ -7,6 +7,7 @@ public interface Location {
     public String getName();
     public GameObject[] getObjectsList();
     public void onLookover();
+    public void onVision();
     public void onArrival();
     public void onLeave();
 }

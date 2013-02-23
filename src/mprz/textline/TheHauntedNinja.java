@@ -9,11 +9,11 @@ import org.fusesource.jansi.Ansi.Color;
  *
  * @author michcioperz <michcioperz@gmail.com
  */
-public class PathOfNinjaEp1 {
+public class TheHauntedNinja {
     mSheep sheep;
     LE7ELS le7els;
     
-    public PathOfNinjaEp1() {
+    public TheHauntedNinja() {
         sheep = mSheep.getInstance();
         le7els = new LE7ELS();
         sheep.currentLoc = le7els.start;
@@ -21,10 +21,10 @@ public class PathOfNinjaEp1 {
     
     public static void main(String[] args) {
         try {
-            PathOfNinjaEp1 game = new PathOfNinjaEp1();
+            TheHauntedNinja game = new TheHauntedNinja();
             game.sheep.run();
         } catch (InterruptedException | IOException ex) {
-            Logger.getLogger(PathOfNinjaEp1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TheHauntedNinja.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -95,8 +95,10 @@ public class PathOfNinjaEp1 {
                                         } catch (InterruptedException ex) {
                                             Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
                                         }
-                                        sheep.out.println("Okay, you didn't have time to think. That's sure a good reason. Now, why don't you get out of here?");
+                                        sheep.out.println("It really wasn't high quality, if you can call it quality.");
+                                        sheep.out.println("Looks like something in the chocolate makes you haunted by visions...");
                                         sheep.out.flush();
+                                        sheep.currentLoc.onVision();
                                     }
 
                                     @Override
@@ -111,7 +113,12 @@ public class PathOfNinjaEp1 {
 
                                     @Override
                                     public boolean isVisible() {
-                                        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                        return true;
+                                    }
+
+                                    @Override
+                                    public void onNinjaCollide() {
+                                        
                                     }
                                 };
                             }
@@ -129,54 +136,63 @@ public class PathOfNinjaEp1 {
 						
                         @Override
                         public boolean isVisible() {
-                                return true;
+                            return true;
+                        }
+
+                        @Override
+                        public void onNinjaCollide() {
+                            
                         }
                     };
-                    //<editor-fold defaultstate="collapsed" desc="new object">
-                    /*
-                     * map[1] = new GameObject() {
-                     * @Override
-                     * public String getName() {
-                     * return "Door to hallway";
-                     * }
-                     * 
-                     * @Override
-                     * public void onUse() {
-                     * if (sheep.effects[0] == null) {
-                     * sheep.out.println("The door is closed.");
-                     * sheep.out.flush();
-                     * } else {
-                     * sheep.out.println("It's too dark there to go.");
-                     * sheep.out.println(sheep.color("I can't do anything without my ninja powers.", Color.YELLOW) + " you remind yourself");
-                     * sheep.out.flush();
-                     * }
-                     * }
-                     * 
-                     * @Override
-                     * public GameObject[] getParent() {
-                     * return start.getObjectsList();
-                     * }
-                     * 
-                     * @Override
-                     * public String getCodename() {
-                     * return "hallwaydoor";
-                     * }
-                     * 
-                     * @Override
-                     * public boolean isVisible() {
-                     * if (sheep.effects[0] == null) {
-                     * return true;
-                     * } else {
-                     * return false;
-                     * }
-                     * }
-                     * };
-                     */
-                    //</editor-fold>
+                    map[1] = new GameObject() {
+                        @Override
+                        public String getName() {
+                            return "Door";
+                        }
+                    
+                        @Override
+                        public void onUse() {
+                            if (sheep.effects[0] == null) {
+                                sheep.out.println("The door is closed.");
+                                sheep.out.flush();
+                            }
+                        }
+                    
+                        @Override
+                        public GameObject[] getParent() {
+                            return start.getObjectsList();
+                        }
+                    
+                        @Override
+                        public String getCodename() {
+                            return "door";
+                        }
+                    
+                        @Override
+                        public boolean isVisible() {
+                            if (sheep.effects[0] == null) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+
+                        @Override
+                        public void onNinjaCollide() {
+                            sheep.out.println("You decide to do use some ninja skills...");
+                            sheep.out.println("The distance between you and the door become closer and closer and...");
+                            sheep.out.flush();
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException ex) {
+                                Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    };
                     sheep.out.println("You wake up in the chocolate factory.");
                     sheep.out.println("All alone, with no one nearby.");
                     sheep.out.println("On own survival.");
-                    sheep.out.println(sheep.color("PATH OF THE NINJA: EPISODE 1", Color.CYAN));
+                    sheep.out.println(sheep.color("THE HAUNTED NINJA: EPISODE 1", Color.CYAN));
                     try {
                         Thread.sleep(3000);
                     } catch (InterruptedException ex) {
@@ -198,7 +214,21 @@ public class PathOfNinjaEp1 {
 
                 @Override
                 public void onLeave() {
+                    try {
+                        sheep.console.clearScreen();
+                        sheep.out.println(sheep.color("TO BE CONTINUED...",Color.CYAN));
+                        sheep.stop();
+                    } catch (IOException ex) {
+                        Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+                @Override
+                public void onVision() {
+                    sheep.out.println(sheep.color("You see yourself smashing through the wall nearby. That's it, you're haunted by visions, right?", Color.RED));
+                    sheep.out.println("After you get back to the real reality, you find out there is something on the wall.");
                     
+                    sheep.out.println(sheep.color("Door!", Color.YELLOW));
                 }
             };
         }

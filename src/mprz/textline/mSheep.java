@@ -52,28 +52,7 @@ public class mSheep {
         out.println(color("Trasmission begun.", Color.RED));
         out.flush();
         Thread.sleep(1000);
-        out.println("mSHEEP Text Game Engine");
-        out.println();
-        out.println("           /\\0");
-        out.println("          /" + color("_", Color.GREEN) + " \\0");
-        out.println("         /  " + color("_", Color.GREEN) + " \\@@@@@@@@@   @");
-        out.println("        /\\    @#########@ @#@");
-        out.println("        \\ \\/ @###########@###@");
-        out.println("         \\  @#############@#@");
-        out.println("          \\@###############@");
-        out.println("          @###############@");
-        out.println("          @###############@");
-        out.println("           @#############@");
-        out.println("            @###########@");
-        out.println("             @#########@");
-        out.println("              @@@@@@@@@");
-        out.println("              /|      |\\");
-        out.println("             / |      | \\");
-        out.println("            /---      ---\\");
-        out.println();
-        out.println();
-        out.flush();
-        Thread.sleep(1000);
+        sheep();
     }
     
     public void stop() {
@@ -84,7 +63,7 @@ public class mSheep {
         out.flush();
     }
     
-    public void sheep() throws InterruptedException, InterruptedException {
+    public void sheep() throws InterruptedException {
         out.println("mSHEEP Text Game Engine");
         out.println();
         out.println("           /\\0");
@@ -129,9 +108,11 @@ public class mSheep {
             } else if (line.startsWith("inventory")) {
                 for (GameObject iter: inventory) {
                     if (iter != null) {
-                        out.println(color(iter.getCodename(), Color.MAGENTA) + " " + iter.getName());
-                        out.flush();
-                        Thread.sleep(250);
+                        if (iter.isVisible()) {
+                            out.println(color(iter.getCodename(), Color.MAGENTA) + " " + iter.getName());
+                            out.flush();
+                            Thread.sleep(250);
+                        }
                     }
                 }
             } else if (line.startsWith("effects")) {
@@ -148,11 +129,13 @@ public class mSheep {
                 AggregateCompleter agComp = new AggregateCompleter();
                 for (GameObject iter: inventory) {
                     if (iter != null) {
-                        agComp.getCompleters().add(new StringsCompleter(iter.getCodename()));
+                        if (iter.isVisible())
+                            agComp.getCompleters().add(new StringsCompleter(iter.getCodename()));
                     }
                 }
                 for (GameObject iter: currentLoc.getObjectsList()) {
                     if (iter != null) {
+                        if (iter.isVisible())
                         agComp.getCompleters().add(new StringsCompleter(iter.getCodename()));
                     }
                 }
@@ -162,7 +145,7 @@ public class mSheep {
                 boolean objUsed = false;
                 for (GameObject iter: inventory) {
                     if (iter != null && !objUsed) {
-                        if (useLine.startsWith(iter.getCodename())) {
+                        if (useLine.startsWith(iter.getCodename()) && iter.isVisible()) {
                             iter.onUse();
                             objUsed = true;
                         }
@@ -170,7 +153,7 @@ public class mSheep {
                 }
                 for (GameObject iter: currentLoc.getObjectsList()) {
                     if (iter != null && !objUsed) {
-                        if (useLine.startsWith(iter.getCodename())) {
+                        if (useLine.startsWith(iter.getCodename()) && iter.isVisible()) {
                             iter.onUse();
                             objUsed = true;
                         }
@@ -184,6 +167,46 @@ public class mSheep {
                 console.addCompleter(strCompleter);
             } else if (line.startsWith("lookover")) {
                 currentLoc.onLookover();
+            } else if (line.startsWith("ninja")) {
+                StringsCompleter ninjAbilComp = new StringsCompleter("collide");
+                console.removeCompleter(strCompleter);
+                console.addCompleter(ninjAbilComp);
+                String abiLine = console.readLine(color("mprz:", Color.GREEN) + color("ninja: ", Color.MAGENTA));
+                if (abiLine.startsWith("collide")) {
+                    AggregateCompleter agComp = new AggregateCompleter();
+                    for (GameObject iter: currentLoc.getObjectsList()) {
+                        if (iter != null) {
+                            if (iter.isVisible())
+                            agComp.getCompleters().add(new StringsCompleter(iter.getCodename()));
+                        }
+                    }
+                    console.removeCompleter(ninjAbilComp);
+                    console.addCompleter(agComp);
+                    String useLine = console.readLine(color("mprz:", Color.GREEN) + color("ninja:", Color.MAGENTA) + color("collide: ", Color.BLUE));
+                    boolean objUsed = false;
+                    for (GameObject iter: inventory) {
+                        if (iter != null && !objUsed) {
+                            if (useLine.startsWith(iter.getCodename()) && iter.isVisible()) {
+                                iter.onNinjaCollide();
+                                objUsed = true;
+                            }
+                        }
+                    }
+                    for (GameObject iter: currentLoc.getObjectsList()) {
+                        if (iter != null && !objUsed) {
+                            if (useLine.startsWith(iter.getCodename()) && iter.isVisible()) {
+                                iter.onNinjaCollide();
+                                objUsed = true;
+                            }
+                        }
+                    }
+                    if (!objUsed) {
+                        out.println("Can't ninja-collide with something that's not on the list!");
+                        out.flush();
+                    }
+                    console.removeCompleter(agComp);
+                    console.addCompleter(strCompleter);
+                }
             }
             Thread.sleep(500);
         }
@@ -191,6 +214,6 @@ public class mSheep {
     
     private static class mSheepHolder {
 
-        private static final mSheep INSTANCE = new mSheep(1, 1);
+        private static final mSheep INSTANCE = new mSheep(4, 2);
     }
 }
