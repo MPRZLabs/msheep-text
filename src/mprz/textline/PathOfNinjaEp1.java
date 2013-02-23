@@ -9,11 +9,11 @@ import org.fusesource.jansi.Ansi.Color;
  *
  * @author michcioperz <michcioperz@gmail.com
  */
-public class TheGame {
+public class PathOfNinjaEp1 {
     mSheep sheep;
     LE7ELS le7els;
     
-    public TheGame() {
+    public PathOfNinjaEp1() {
         sheep = mSheep.getInstance();
         le7els = new LE7ELS();
         sheep.currentLoc = le7els.start;
@@ -21,10 +21,10 @@ public class TheGame {
     
     public static void main(String[] args) {
         try {
-            TheGame game = new TheGame();
+            PathOfNinjaEp1 game = new PathOfNinjaEp1();
             game.sheep.run();
         } catch (InterruptedException | IOException ex) {
-            Logger.getLogger(TheGame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PathOfNinjaEp1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -108,6 +108,11 @@ public class TheGame {
                                     public String getCodename() {
                                         return "chocobar";
                                     }
+
+                                    @Override
+                                    public boolean isVisible() {
+                                        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    }
                                 };
                             }
                         }
@@ -122,75 +127,78 @@ public class TheGame {
                             return "machine";
                         }
 						
-						@Override
-						public boolean isVisible() {
-							return true;
-						}
+                        @Override
+                        public boolean isVisible() {
+                                return true;
+                        }
                     };
-                    map[1] = new GameObject() {
-						@Override
-                        public String getName() {
-                            return "Door to hallway";
-                        }
-
-                        @Override
-                        public void onUse() {
-                            if (sheep.effects[0] = null) {
-								sheep.out.println(sheep.color
-							} else {
-								sheep.out.println("It's too dark there to go.");
-								sheep.out.println(sheep.color("I can't do anything without my ninja powers.", Color.YELLOW) + " you remind yourself");
-								sheep.out.flush();
-                        }
-
-                        @Override
-                        public GameObject[] getParent() {
-                            return start.getObjectsList();
-                        }
-
-                        @Override
-                        public String getCodename() {
-                            return "machine";
-                        }
-						
-						@Override
-						public boolean isVisible() {
-							if (effects[0] = null) {
-								return true;
-							} else {
-								return false;
-							}
-						}
-					}
-					sheep.out.println("You wake up in the chocolate factory.");
+                    //<editor-fold defaultstate="collapsed" desc="new object">
+                    /*
+                     * map[1] = new GameObject() {
+                     * @Override
+                     * public String getName() {
+                     * return "Door to hallway";
+                     * }
+                     * 
+                     * @Override
+                     * public void onUse() {
+                     * if (sheep.effects[0] == null) {
+                     * sheep.out.println("The door is closed.");
+                     * sheep.out.flush();
+                     * } else {
+                     * sheep.out.println("It's too dark there to go.");
+                     * sheep.out.println(sheep.color("I can't do anything without my ninja powers.", Color.YELLOW) + " you remind yourself");
+                     * sheep.out.flush();
+                     * }
+                     * }
+                     * 
+                     * @Override
+                     * public GameObject[] getParent() {
+                     * return start.getObjectsList();
+                     * }
+                     * 
+                     * @Override
+                     * public String getCodename() {
+                     * return "hallwaydoor";
+                     * }
+                     * 
+                     * @Override
+                     * public boolean isVisible() {
+                     * if (sheep.effects[0] == null) {
+                     * return true;
+                     * } else {
+                     * return false;
+                     * }
+                     * }
+                     * };
+                     */
+                    //</editor-fold>
+                    sheep.out.println("You wake up in the chocolate factory.");
                     sheep.out.println("All alone, with no one nearby.");
                     sheep.out.println("On own survival.");
-					sheep.out.println(sheep.color("PATH OF THE NINJA: EPISODE 1", Color.CYAN));
-					try {
-						Thread.sleep(3000);
-					} catch (InterruptedException ex) {
-						Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
-                    sheep.out.flush();
+                    sheep.out.println(sheep.color("PATH OF THE NINJA: EPISODE 1", Color.CYAN));
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(3000);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                    sheep.out.flush();
                     sheep.out.println("Also, you feel a bit hungry.");
                     sheep.effects[0] = "You feel hungry.";
                     sheep.out.flush();
                 }
 
                 @Override
-                public void onLeave() {
-                    
+                public void onLookover() {
+                    sheep.out.println("You see a chocolate machine nearby.");
+                    if (map[1].isVisible()) {
+                        sheep.out.println("Also, you can locate the door from your vision");
+                    }
                 }
 
                 @Override
-                public void onLookover() {
-                    sheep.out.println("You see a chocolate machine nearby.");
-					if (map[0].produced) {
-					
+                public void onLeave() {
+                    
                 }
             };
         }
