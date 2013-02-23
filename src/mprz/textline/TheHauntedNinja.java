@@ -98,6 +98,7 @@ public class TheHauntedNinja {
                                         sheep.out.println("It really wasn't high quality, if you can call it quality.");
                                         sheep.out.println("Looks like something in the chocolate makes you haunted by visions...");
                                         sheep.out.flush();
+                                        sheep.effects[1] = "You are haunted by weird visions.";
                                         sheep.currentLoc.onVision();
                                     }
 
@@ -118,7 +119,8 @@ public class TheHauntedNinja {
 
                                     @Override
                                     public void onNinjaCollide() {
-                                        
+                                        sheep.out.println("Don't waste chocolate!");
+                                        sheep.out.flush();
                                     }
                                 };
                             }
@@ -141,7 +143,8 @@ public class TheHauntedNinja {
 
                         @Override
                         public void onNinjaCollide() {
-                            
+                            sheep.out.println("The machine doesn't seem to care much about any ninjas colliding with it.");
+                            sheep.out.flush();
                         }
                     };
                     map[1] = new GameObject() {
@@ -187,6 +190,7 @@ public class TheHauntedNinja {
                             } catch (InterruptedException ex) {
                                 Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
                             }
+                            sheep.currentLoc.onLeave();
                         }
                     };
                     sheep.out.println("You wake up in the chocolate factory.");

@@ -42,8 +42,8 @@ public class mSheep {
     }
 
     private void init(int inventoryCount, int effectsCount) throws IOException, InterruptedException {
-        inventory = new GameObject[1];
-        effects = new String[1];
+        inventory = new GameObject[inventoryCount];
+        effects = new String[effectsCount];
         console = new ConsoleReader();
         out = new PrintWriter(console.getOutput());
         console.setHandleUserInterrupt(true);
@@ -61,6 +61,8 @@ public class mSheep {
         out.println(color("MPRZ Tech Labs", Color.CYAN));
         out.println(color("Transmission done.", Color.RED));
         out.flush();
+        console.shutdown();
+        System.exit(0);
     }
     
     public void sheep() throws InterruptedException {
@@ -104,6 +106,7 @@ public class mSheep {
                 out.println(color("sheep", Color.MAGENTA) + "          uses " + color("the Mysterious Magic of Green Unicorns from Parallel Universe Where Edison Never Existed", Color.CYAN) + " to draw a black hole in time-space continuum fabric");
                 out.println(color("lookover", Color.MAGENTA) + "       asks your character's eyes for things it sees");
                 out.println(color("use", Color.MAGENTA) + "            lets you use an object from the inventory or the environment");
+                out.println(color("ninja", Color.MAGENTA) + "          use the ninja abilities");
                 out.flush();
             } else if (line.startsWith("inventory")) {
                 for (GameObject iter: inventory) {
@@ -168,44 +171,49 @@ public class mSheep {
             } else if (line.startsWith("lookover")) {
                 currentLoc.onLookover();
             } else if (line.startsWith("ninja")) {
-                StringsCompleter ninjAbilComp = new StringsCompleter("collide");
-                console.removeCompleter(strCompleter);
-                console.addCompleter(ninjAbilComp);
-                String abiLine = console.readLine(color("mprz:", Color.GREEN) + color("ninja: ", Color.MAGENTA));
-                if (abiLine.startsWith("collide")) {
-                    AggregateCompleter agComp = new AggregateCompleter();
-                    for (GameObject iter: currentLoc.getObjectsList()) {
-                        if (iter != null) {
-                            if (iter.isVisible())
-                            agComp.getCompleters().add(new StringsCompleter(iter.getCodename()));
-                        }
-                    }
-                    console.removeCompleter(ninjAbilComp);
-                    console.addCompleter(agComp);
-                    String useLine = console.readLine(color("mprz:", Color.GREEN) + color("ninja:", Color.MAGENTA) + color("collide: ", Color.BLUE));
-                    boolean objUsed = false;
-                    for (GameObject iter: inventory) {
-                        if (iter != null && !objUsed) {
-                            if (useLine.startsWith(iter.getCodename()) && iter.isVisible()) {
-                                iter.onNinjaCollide();
-                                objUsed = true;
+                if (effects[0] == null) {
+                    StringsCompleter ninjAbilComp = new StringsCompleter("collide");
+                    console.removeCompleter(strCompleter);
+                    console.addCompleter(ninjAbilComp);
+                    String abiLine = console.readLine(color("mprz:", Color.GREEN) + color("ninja: ", Color.MAGENTA));
+                    if (abiLine.startsWith("collide")) {
+                        AggregateCompleter agComp = new AggregateCompleter();
+                        for (GameObject iter: currentLoc.getObjectsList()) {
+                            if (iter != null) {
+                                if (iter.isVisible())
+                                agComp.getCompleters().add(new StringsCompleter(iter.getCodename()));
                             }
                         }
-                    }
-                    for (GameObject iter: currentLoc.getObjectsList()) {
-                        if (iter != null && !objUsed) {
-                            if (useLine.startsWith(iter.getCodename()) && iter.isVisible()) {
-                                iter.onNinjaCollide();
-                                objUsed = true;
+                        console.removeCompleter(ninjAbilComp);
+                        console.addCompleter(agComp);
+                        String useLine = console.readLine(color("mprz:", Color.GREEN) + color("ninja:", Color.MAGENTA) + color("collide: ", Color.BLUE));
+                        boolean objUsed = false;
+                        for (GameObject iter: inventory) {
+                            if (iter != null && !objUsed) {
+                                if (useLine.startsWith(iter.getCodename()) && iter.isVisible()) {
+                                    iter.onNinjaCollide();
+                                    objUsed = true;
+                                }
                             }
                         }
+                        for (GameObject iter: currentLoc.getObjectsList()) {
+                            if (iter != null && !objUsed) {
+                                if (useLine.startsWith(iter.getCodename()) && iter.isVisible()) {
+                                    iter.onNinjaCollide();
+                                    objUsed = true;
+                                }
+                            }
+                        }
+                        if (!objUsed) {
+                            out.println("Can't ninja-collide with something that's not on the list!");
+                            out.flush();
+                        }
+                        console.removeCompleter(agComp);
+                        console.addCompleter(strCompleter);
                     }
-                    if (!objUsed) {
-                        out.println("Can't ninja-collide with something that's not on the list!");
-                        out.flush();
-                    }
-                    console.removeCompleter(agComp);
-                    console.addCompleter(strCompleter);
+                } else {
+                    out.println("Hungry ninja is not ninja.");
+                    out.flush();
                 }
             }
             Thread.sleep(500);
