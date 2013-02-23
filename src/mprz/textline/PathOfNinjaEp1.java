@@ -125,6 +125,7 @@ public class TheGame {
                     sheep.out.println("You wake up in the chocolate factory.");
                     sheep.out.println("All alone, with no one nearby.");
                     sheep.out.println("On own survival.");
+					sheep.out.println(sheep.color("PATH OF THE NINJA: EPISODE 1", Color.CYAN));
                     sheep.out.flush();
                     try {
                         Thread.sleep(1000);
