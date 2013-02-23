@@ -8,4 +8,5 @@ public interface GameObject {
     public void onUse();
     public GameObject[] getParent();
     public String getCodename();
+	public boolean isVisible();
 }

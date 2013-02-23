@@ -50,10 +50,10 @@ public class TheGame {
 
                 @Override
                 public void onArrival() {
-                    map = new GameObject[1];
+                    map = new GameObject[2];
                     map[0] = new GameObject() {
                         
-                        boolean produced = false;
+                        public boolean produced = false;
 
                         @Override
                         public String getName() {
@@ -68,7 +68,7 @@ public class TheGame {
                                 try {
                                     Thread.sleep(500);
                                 } catch (InterruptedException ex) {
-                                    Logger.getLogger(February1GAM.class.getName()).log(Level.SEVERE, null, ex);
+                                    Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                                 sheep.out.println(sheep.color("WHY IS THIS WORLD SO CRUEL?!", Color.YELLOW) + " you shout out loud, but not anyone and not anything seems to have heard it.");
                                 sheep.out.flush();
@@ -93,7 +93,7 @@ public class TheGame {
                                         try {
                                             Thread.sleep(2000);
                                         } catch (InterruptedException ex) {
-                                            Logger.getLogger(February1GAM.class.getName()).log(Level.SEVERE, null, ex);
+                                            Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
                                         }
                                         sheep.out.println("Okay, you didn't have time to think. That's sure a good reason. Now, why don't you get out of here?");
                                         sheep.out.flush();
@@ -121,16 +121,60 @@ public class TheGame {
                         public String getCodename() {
                             return "machine";
                         }
+						
+						@Override
+						public boolean isVisible() {
+							return true;
+						}
                     };
-                    sheep.out.println("You wake up in the chocolate factory.");
+                    map[1] = new GameObject() {
+						@Override
+                        public String getName() {
+                            return "Door to hallway";
+                        }
+
+                        @Override
+                        public void onUse() {
+                            if (sheep.effects[0] = null) {
+								sheep.out.println(sheep.color
+							} else {
+								sheep.out.println("It's too dark there to go.");
+								sheep.out.println(sheep.color("I can't do anything without my ninja powers.", Color.YELLOW) + " you remind yourself");
+								sheep.out.flush();
+                        }
+
+                        @Override
+                        public GameObject[] getParent() {
+                            return start.getObjectsList();
+                        }
+
+                        @Override
+                        public String getCodename() {
+                            return "machine";
+                        }
+						
+						@Override
+						public boolean isVisible() {
+							if (effects[0] = null) {
+								return true;
+							} else {
+								return false;
+							}
+						}
+					}
+					sheep.out.println("You wake up in the chocolate factory.");
                     sheep.out.println("All alone, with no one nearby.");
                     sheep.out.println("On own survival.");
 					sheep.out.println(sheep.color("PATH OF THE NINJA: EPISODE 1", Color.CYAN));
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException ex) {
+						Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
                     sheep.out.flush();
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException ex) {
-                        Logger.getLogger(February1GAM.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     sheep.out.println("Also, you feel a bit hungry.");
                     sheep.effects[0] = "You feel hungry.";
@@ -144,7 +188,9 @@ public class TheGame {
 
                 @Override
                 public void onLookover() {
-                    sheep.out.println("Only thing you can see is a chocolate machine nearby.");
+                    sheep.out.println("You see a chocolate machine nearby.");
+					if (map[0].produced) {
+					
                 }
             };
         }
