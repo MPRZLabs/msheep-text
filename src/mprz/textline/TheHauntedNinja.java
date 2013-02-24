@@ -31,7 +31,8 @@ public class TheHauntedNinja {
     
     public class LE7ELS {
         
-        Location start;
+        public Location start;
+        public Location hallway;
         
         public LE7ELS() {
             start = new Location() {
@@ -186,7 +187,7 @@ public class TheHauntedNinja {
                             sheep.out.println("The distance between you and the door become closer and closer and...");
                             sheep.out.flush();
                             try {
-                                Thread.sleep(1000);
+                                Thread.sleep(3000);
                             } catch (InterruptedException ex) {
                                 Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -219,10 +220,11 @@ public class TheHauntedNinja {
                 @Override
                 public void onLeave() {
                     try {
-                        sheep.console.clearScreen();
                         sheep.out.println(sheep.color("TO BE CONTINUED...",Color.CYAN));
+                        sheep.out.flush();
+                        Thread.sleep(3000);
                         sheep.stop();
-                    } catch (IOException ex) {
+                    } catch (IOException | InterruptedException ex) {
                         Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
@@ -233,6 +235,38 @@ public class TheHauntedNinja {
                     sheep.out.println("After you get back to the real reality, you find out there is something on the wall.");
                     
                     sheep.out.println(sheep.color("Door!", Color.YELLOW));
+                }
+            };
+            hallway = new Location() {
+
+                @Override
+                public String getName() {
+                    return "Hallway";
+                }
+
+                @Override
+                public GameObject[] getObjectsList() {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public void onLookover() {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public void onVision() {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public void onArrival() {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public void onLeave() {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 }
             };
         }

@@ -55,11 +55,11 @@ public class mSheep {
         sheep();
     }
     
-    public void stop() {
-        out.println();
-        out.println();
+    public void stop() throws InterruptedException, IOException {
+        console.clearScreen();
         out.println(color("MPRZ Tech Labs", Color.CYAN));
         out.println(color("Transmission done.", Color.RED));
+        sheep();
         out.flush();
         console.shutdown();
         System.exit(0);
