@@ -19,7 +19,7 @@ public class mSheep {
     public PrintWriter out;
     public GameObject[] inventory;
     public String[] effects;
-    public StringsCompleter strCompleter = new StringsCompleter("help", "inventory", "stop", "sheep", "effects", "lookover", "use");
+    public StringsCompleter strCompleter = new StringsCompleter("help", "inventory", "stop", "sheep", "effects", "lookover", "use", "ninja");
     public Location currentLoc;
     
     public String color(String text, int color) {
@@ -65,6 +65,17 @@ public class mSheep {
         System.exit(0);
     }
     
+    public void loadLocation(Location loc) {
+        try {
+            console.clearScreen();
+            sheep();
+        } catch (IOException | InterruptedException ex) {
+            Logger.getLogger(mSheep.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        currentLoc = loc;
+        currentLoc.onArrival();
+    }
+    
     public void sheep() throws InterruptedException {
         out.println("mSHEEP Text Game Engine");
         out.println();
@@ -91,7 +102,6 @@ public class mSheep {
     }
     
     public void run() throws InterruptedException, IOException {
-        currentLoc.onArrival();
         String line;
         while (true) {
             line = console.readLine(color("mprz: ", Color.GREEN));
