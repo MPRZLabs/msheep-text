@@ -16,7 +16,7 @@ public class TheHauntedNinja {
     public TheHauntedNinja() {
         sheep = mSheep.getInstance();
         le7els = new LE7ELS();
-        sheep.currentLoc = le7els.start;
+        sheep.loadLocation(le7els.start);
     }
     
     public static void main(String[] args) {
@@ -99,6 +99,11 @@ public class TheHauntedNinja {
                                         sheep.out.println("It really wasn't high quality, if you can call it quality.");
                                         sheep.out.println("Looks like something in the chocolate makes you haunted by visions...");
                                         sheep.out.flush();
+                                        try {
+                                            Thread.sleep(2000);
+                                        } catch (InterruptedException ex) {
+                                            Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
                                         sheep.effects[1] = "You are haunted by weird visions.";
                                         sheep.currentLoc.onVision();
                                     }
@@ -223,8 +228,8 @@ public class TheHauntedNinja {
                         sheep.out.println(sheep.color("TO BE CONTINUED...",Color.CYAN));
                         sheep.out.flush();
                         Thread.sleep(3000);
-                        sheep.stop();
-                    } catch (IOException | InterruptedException ex) {
+                        sheep.loadLocation(hallway);
+                    } catch (InterruptedException ex) {
                         Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
@@ -238,6 +243,9 @@ public class TheHauntedNinja {
                 }
             };
             hallway = new Location() {
+                
+                GameObject[] map;
+                boolean visionDone = false;
 
                 @Override
                 public String getName() {
@@ -246,27 +254,201 @@ public class TheHauntedNinja {
 
                 @Override
                 public GameObject[] getObjectsList() {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    return map;
                 }
 
                 @Override
                 public void onLookover() {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    sheep.out.println("Unsurprisingly, there are door on the right and door on the left, like in a normal hallway, right?");
+                    sheep.out.println("However, the hallway is way brighter than the production line, thanks to a lamp on the ceiling.");
+                    if (visionDone) {
+                        sheep.out.println("And the walls are painted with your brother's blood. Ugh! What a creepy day...");
+                    } else {
+                        onVision();
+                    }
+                    sheep.out.flush();
                 }
 
                 @Override
                 public void onVision() {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    visionDone = true;
+                    sheep.out.println(sheep.color("You see two masked gmans carrying some yellow person", Color.RED));
+                    sheep.out.println("After you get back to the real reality, you find out there is something on the wall.");
+                    sheep.out.println(sheep.color("YELLOW BLOOD!", Color.YELLOW));
+                    sheep.out.flush();
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    sheep.out.println(sheep.color("No! They took him!", Color.YELLOW));
+                    sheep.out.flush();
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    sheep.out.println(sheep.color("Bro! Where are you? Can you hear me?", Color.YELLOW));
+                    sheep.out.flush();
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    sheep.out.println("You only hear quiet robotic \"Hello, friend!\" voice and decide to shout no more...");
+                    sheep.out.flush();
                 }
 
                 @Override
                 public void onArrival() {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    map = new GameObject[3];
+                    
+                    map[0] = new GameObject() {
+
+                        @Override
+                        public String getName() {
+                            return "Lamp";
+                        }
+
+                        @Override
+                        public void onUse() {
+                            sheep.out.println(sheep.color("That's too high... Let's use some ninja skills...", Color.YELLOW));
+                            sheep.out.flush();
+                        }
+
+                        @Override
+                        public GameObject[] getParent() {
+                            return map;
+                        }
+
+                        @Override
+                        public String getCodename() {
+                            return "lamp";
+                        }
+
+                        @Override
+                        public boolean isVisible() {
+                            return true;
+                        }
+
+                        @Override
+                        public void onNinjaCollide() {
+                            sheep.out.println("Things happen like with the door, despite that it takes you a lot less time.");
+                            sheep.out.println("Anyway, that lamp broke and you found a bunch of keys!");
+                            sheep.out.flush();
+                            sheep.inventory[1] = new GameObject() {
+
+                                @Override
+                                public String getName() {
+                                    return "Bunch of keys";
+                                }
+
+                                @Override
+                                public void onUse() {
+                                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                }
+
+                                @Override
+                                public GameObject[] getParent() {
+                                    return sheep.inventory;
+                                }
+
+                                @Override
+                                public String getCodename() {
+                                    return "keys";
+                                }
+
+                                @Override
+                                public boolean isVisible() {
+                                    return true;
+                                }
+
+                                @Override
+                                public void onNinjaCollide() {
+                                    sheep.out.println("That's simply impossible.");
+                                    sheep.out.flush();
+                                }
+                            };
+                        }
+                    };
+                    
+                    map[1] = new GameObject() {
+
+                        @Override
+                        public String getName() {
+                            return "Door on the left";
+                        }
+
+                        @Override
+                        public void onUse() {
+                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                        }
+
+                        @Override
+                        public GameObject[] getParent() {
+                            return map;
+                        }
+
+                        @Override
+                        public String getCodename() {
+                            return "door1";
+                        }
+
+                        @Override
+                        public boolean isVisible() {
+                            return true;
+                        }
+
+                        @Override
+                        public void onNinjaCollide() {
+                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                        }
+                    };
+                    
+                    map[2] = new GameObject() {
+
+                        @Override
+                        public String getName() {
+                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                        }
+
+                        @Override
+                        public void onUse() {
+                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                        }
+
+                        @Override
+                        public GameObject[] getParent() {
+                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                        }
+
+                        @Override
+                        public String getCodename() {
+                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                        }
+
+                        @Override
+                        public boolean isVisible() {
+                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                        }
+
+                        @Override
+                        public void onNinjaCollide() {
+                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                        }
+                    };
                 }
 
                 @Override
                 public void onLeave() {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    try {
+                        sheep.out.println(sheep.color("TO BE CONTINUED...",Color.CYAN));
+                        sheep.out.flush();
+                        Thread.sleep(3000);
+                        sheep.stop();
+                    } catch (IOException | InterruptedException ex) {
+                        Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             };
         }
