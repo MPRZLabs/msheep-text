@@ -7,7 +7,7 @@ import org.fusesource.jansi.Ansi.Color;
 
 /**
  *
- * @author michcioperz <michcioperz@gmail.com
+ * @author michcioperz <michcioperz@gmail.com>
  */
 public class TheHauntedNinja {
     mSheep sheep;
@@ -337,6 +337,9 @@ public class TheHauntedNinja {
                             sheep.out.println("Anyway, that lamp broke and you found a bunch of keys!");
                             sheep.out.flush();
                             sheep.inventory[1] = new GameObject() {
+                                
+                                boolean usedOnDoor1 = false;
+                                boolean usedOnDoor2 = false;
 
                                 @Override
                                 public String getName() {
@@ -345,7 +348,7 @@ public class TheHauntedNinja {
 
                                 @Override
                                 public void onUse() {
-                                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                                    
                                 }
 
                                 @Override
@@ -360,7 +363,7 @@ public class TheHauntedNinja {
 
                                 @Override
                                 public boolean isVisible() {
-                                    return true;
+                                    return !(usedOnDoor1 && usedOnDoor2);
                                 }
 
                                 @Override
@@ -409,7 +412,7 @@ public class TheHauntedNinja {
 
                         @Override
                         public String getName() {
-                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                            return "Door on the right";
                         }
 
                         @Override
@@ -419,17 +422,17 @@ public class TheHauntedNinja {
 
                         @Override
                         public GameObject[] getParent() {
-                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                            return map;
                         }
 
                         @Override
                         public String getCodename() {
-                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                            return "door2";
                         }
 
                         @Override
                         public boolean isVisible() {
-                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                            return true;
                         }
 
                         @Override
