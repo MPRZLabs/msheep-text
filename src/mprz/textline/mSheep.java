@@ -44,14 +44,16 @@ public class mSheep {
         console.addCompleter(strCompleter);
         slowSay("MPRZ Tech Labs", Color.CYAN, 100);
         slowSay("Transmission begun.", Color.RED, 100);
-        sleep(3000);
+        slowSay("Loading [", Color.WHITE, 50, false);
+        slowSay("|||||||||||||||||||||||||]", Color.WHITE, 25);
+        sleep(2000);
     }
     
     public void stop() throws IOException {
         console.clearScreen();
+        sheep();
         slowSay("MPRZ Tech Labs", Color.CYAN, 100);
         slowSay("Transmission done.", Color.RED, 100);
-        sheep();
         console.shutdown();
         System.exit(0);
     }
@@ -246,6 +248,10 @@ public class mSheep {
     }
     
     public void slowSay(String text, Color color, long interval) {
+        slowSay(text, color, interval, true);
+    }
+    
+    public void slowSay(String text, Color color, long interval, boolean ln) {
         out.print(color("", color));
         for (int i = 0; i < text.length(); i++) {
             out.print(text.charAt(i));
@@ -256,7 +262,9 @@ public class mSheep {
                 Logger.getLogger(mSheep.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        out.println();
+        if (ln) {
+            out.println();
+        }
     }
     
     public void sleep(long millis) {
