@@ -23,17 +23,10 @@ public class mSheep {
     public Location currentLoc;
     private boolean ninjaVisible = true;
     
-    public String color(String text, int color) {
-        return "\u001B[" + color + "m" + text + "\u001B[" + Color.WHITE.fg() + "m";
-    }
-    public String color(String text, Color color) {
-        return color(text, color.fg());
-    }
-    
     private mSheep(int inventoryCount, int effectsCount) {
         try {
             this.init(inventoryCount, effectsCount);
-        } catch (IOException | InterruptedException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(mSheep.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -42,26 +35,24 @@ public class mSheep {
         return mSheepHolder.INSTANCE;
     }
 
-    private void init(int inventoryCount, int effectsCount) throws IOException, InterruptedException {
+    private void init(int inventoryCount, int effectsCount) throws IOException {
         inventory = new GameObject[inventoryCount];
         effects = new String[effectsCount];
         console = new ConsoleReader();
         out = new PrintWriter(console.getOutput());
         console.setHandleUserInterrupt(true);
         console.addCompleter(strCompleter);
-        out.println(color("MPRZ Tech Labs", Color.CYAN));
-        out.println(color("Trasmission begun.", Color.RED));
-        out.flush();
-        Thread.sleep(1000);
+        say("MPRZ Tech Labs", Color.CYAN, 100);
+        say("Transmission begun.", Color.RED, 100);
+        sleep(1000);
         sheep();
     }
     
-    public void stop() throws InterruptedException, IOException {
+    public void stop() throws IOException {
         console.clearScreen();
-        out.println(color("MPRZ Tech Labs", Color.CYAN));
-        out.println(color("Transmission done.", Color.RED));
+        say("MPRZ Tech Labs", Color.CYAN, 100);
+        say("Transmission done.", Color.RED, 100);
         sheep();
-        out.flush();
         console.shutdown();
         System.exit(0);
     }
@@ -70,39 +61,38 @@ public class mSheep {
         try {
             console.clearScreen();
             sheep();
-        } catch (IOException | InterruptedException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(mSheep.class.getName()).log(Level.SEVERE, null, ex);
         }
         currentLoc = loc;
         currentLoc.onArrival();
     }
     
-    public void sheep() throws InterruptedException {
-        out.println("mSHEEP Text Game Engine");
-        out.println();
-        out.println("           /\\0");
-        out.println("          /" + color("_", Color.GREEN) + " \\0");
-        out.println("         /  " + color("_", Color.GREEN) + " \\@@@@@@@@@   @");
-        out.println("        /\\    @#########@ @#@");
-        out.println("        \\ \\/ @###########@###@");
-        out.println("         \\  @#############@#@");
-        out.println("          \\@###############@");
-        out.println("          @###############@");
-        out.println("          @###############@");
-        out.println("           @#############@");
-        out.println("            @###########@");
-        out.println("             @#########@");
-        out.println("              @@@@@@@@@");
-        out.println("              /|      |\\");
-        out.println("             / |      | \\");
-        out.println("            /---      ---\\");
-        out.println();
-        out.println();
-        out.flush();
-        Thread.sleep(1000);
+    public void sheep() {
+        say("mSHEEP Text Game Engine", 500);
+        say("", 50);
+        say("           /\\0", 50);
+        say("          /" + color("_", Color.GREEN) + " \\0", 50);
+        say("         /  " + color("_", Color.GREEN) + " \\@@@@@@@@@   @", 50);
+        say("        /\\    @#########@ @#@", 50);
+        say("        \\ \\/ @###########@###@", 50);
+        say("         \\  @#############@#@", 50);
+        say("          \\@###############@", 50);
+        say("          @###############@", 50);
+        say("          @###############@", 50);
+        say("           @#############@", 50);
+        say("            @###########@", 50);
+        say("             @#########@", 50);
+        say("              @@@@@@@@@", 50);
+        say("              /|      |\\", 50);
+        say("             / |      | \\", 50);
+        say("            /---      ---\\", 50);
+        say("", 50);
+        say("", 50);
+        sleep(1000);
     }
     
-    public void run() throws InterruptedException, IOException {
+    public void run() throws IOException {
         String line;
         while (true) {
             line = console.readLine(color("mprz: ", Color.GREEN));
@@ -110,34 +100,29 @@ public class mSheep {
                 stop();
                 break;
             } else if (line.startsWith("help")) {
-                out.println(color("help", Color.MAGENTA) + "           shows help");
-                out.println(color("stop", Color.MAGENTA) + "           exits game");
-                out.println(color("inventory", Color.MAGENTA) + "      lists your character's inventory");
-                out.println(color("effects", Color.MAGENTA) + "        lists physical and psychical effects affecting your character");
-                out.println(color("sheep", Color.MAGENTA) + "          uses " + color("the Mysterious Magic of Green Unicorns from Parallel Universe Where Edison Never Existed", Color.CYAN) + " to draw a black hole in time-space continuum fabric");
-                out.println(color("lookover", Color.MAGENTA) + "       asks your character's eyes for things it sees");
-                out.println(color("use", Color.MAGENTA) + "            lets you use an object from the inventory or the environment");
-                out.println(color("ninja", Color.MAGENTA) + "          use the ninja abilities");
-                out.flush();
+                say(color("help", Color.MAGENTA) + "           shows help");
+                say(color("stop", Color.MAGENTA) + "           exits game");
+                say(color("inventory", Color.MAGENTA) + "      lists your character's inventory");
+                say(color("effects", Color.MAGENTA) + "        lists physical and psychical effects affecting your character");
+                say(color("sheep", Color.MAGENTA) + "          uses " + color("the Mysterious Magic of Green Unicorns from Parallel Universe Where Edison Never Existed", Color.CYAN) + " to draw a black hole in time-space continuum fabric");
+                say(color("lookover", Color.MAGENTA) + "       asks your character's eyes for things it sees");
+                say(color("use", Color.MAGENTA) + "            lets you use an object from the inventory or the environment");
+                say(color("ninja", Color.MAGENTA) + "          use the ninja abilities");
             } else if (line.startsWith("inventory")) {
                 for (GameObject iter: inventory) {
                     if (iter != null) {
                         if (iter.isVisible()) {
-                            out.println(color(iter.getCodename(), Color.MAGENTA) + " " + iter.getName());
-                            out.flush();
-                            Thread.sleep(250);
+                            say((color(iter.getCodename(), Color.MAGENTA) + " " + iter.getName()), 250);
                         }
                     }
                 }
             } else if (line.startsWith("effects")) {
                 if (!isNinjaVisible()) {
-                    out.println("You are invisible...");
+                    say("You are invisible...", 250);
                 }
                 for (String iter: effects) {
                     if (iter != null) {
-                        out.println(iter);
-                        out.flush();
-                        Thread.sleep(250);
+                        say(iter, 250);
                     }
                 }
             } else if (line.startsWith("sheep")) {
@@ -177,8 +162,7 @@ public class mSheep {
                     }
                 }
                 if (!objUsed) {
-                    out.println("Can't use something that's not on the list!");
-                    out.flush();
+                    say("Can't use something that's not on the list!");
                 }
                 console.removeCompleter(agComp);
                 console.addCompleter(strCompleter);
@@ -219,26 +203,23 @@ public class mSheep {
                             }
                         }
                         if (!objUsed) {
-                            out.println("Can't ninja-collide with something that's not on the list!");
-                            out.flush();
+                            say("Can't ninja-collide with something that's not on the list!");
                         }
                         console.removeCompleter(agComp);
                         console.addCompleter(strCompleter);
                     } else if (abiLine.startsWith("invisibility")) {
                         if (isNinjaVisible()) {
-                            out.println("You disappear in the darkness...");
+                            say("You disappear in the darkness...");
                         } else {
-                            out.println("You re-appear from the darkness...");
+                            say("You re-appear from the darkness...");
                         }
-                        out.flush();
                         setNinjaVisible(!isNinjaVisible());
                     }
                 } else {
-                    out.println("Hungry ninja is not ninja.");
-                    out.flush();
+                    say("Hungry ninja is not ninja.");
                 }
             }
-            Thread.sleep(500);
+            sleep(500);
         }
     }
 
@@ -259,5 +240,40 @@ public class mSheep {
     private static class mSheepHolder {
 
         private static final mSheep INSTANCE = new mSheep(4, 2);
+    }
+    
+    public void sleep(long millis) {
+        out.flush();
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(mSheep.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void say(String text, Color color, long time) {
+        out.print(color(text, color));
+        out.flush();
+        sleep(time);
+    }
+    
+    public void say(String text, long time) {
+        say(text, Color.WHITE, time);
+    }
+    
+    public void say(String text, Color color) {
+        say(text, color, 0);
+    }
+    
+    public void say(String text) {
+        say(text, Color.WHITE);
+    }
+    
+    public String color(String text, int color) {
+        return "\u001B[" + color + "m" + text + "\u001B[" + Color.WHITE.fg() + "m";
+    }
+    
+    public String color(String text, Color color) {
+        return color(text, color.fg());
     }
 }
