@@ -21,6 +21,7 @@ public class mSheep {
     public String[] effects;
     public StringsCompleter strCompleter = new StringsCompleter("help", "inventory", "stop", "sheep", "effects", "lookover", "use", "ninja");
     public Location currentLoc;
+    private boolean ninjaVisible = true;
     
     public String color(String text, int color) {
         return "\u001B[" + color + "m" + text + "\u001B[" + Color.WHITE.fg() + "m";
@@ -129,6 +130,9 @@ public class mSheep {
                     }
                 }
             } else if (line.startsWith("effects")) {
+                if (!isNinjaVisible()) {
+                    out.println("You are invisible...");
+                }
                 for (String iter: effects) {
                     if (iter != null) {
                         out.println(iter);
@@ -182,7 +186,7 @@ public class mSheep {
                 currentLoc.onLookover();
             } else if (line.startsWith("ninja")) {
                 if (effects[0] == null) {
-                    StringsCompleter ninjAbilComp = new StringsCompleter("collide");
+                    StringsCompleter ninjAbilComp = new StringsCompleter("collide", "invisibility");
                     console.removeCompleter(strCompleter);
                     console.addCompleter(ninjAbilComp);
                     String abiLine = console.readLine(color("mprz:", Color.GREEN) + color("ninja: ", Color.MAGENTA));
@@ -220,6 +224,14 @@ public class mSheep {
                         }
                         console.removeCompleter(agComp);
                         console.addCompleter(strCompleter);
+                    } else if (abiLine.startsWith("invisibility")) {
+                        if (isNinjaVisible()) {
+                            out.println("You disappear in the darkness...");
+                        } else {
+                            out.println("You re-appear from the darkness...");
+                        }
+                        out.flush();
+                        setNinjaVisible(!isNinjaVisible());
                     }
                 } else {
                     out.println("Hungry ninja is not ninja.");
@@ -228,6 +240,20 @@ public class mSheep {
             }
             Thread.sleep(500);
         }
+    }
+
+    /**
+     * @return the ninjaVisible
+     */
+    public boolean isNinjaVisible() {
+        return ninjaVisible;
+    }
+
+    /**
+     * @param ninjaVisible the ninjaVisible to set
+     */
+    public void setNinjaVisible(boolean ninjaVisible) {
+        this.ninjaVisible = ninjaVisible;
     }
     
     private static class mSheepHolder {
