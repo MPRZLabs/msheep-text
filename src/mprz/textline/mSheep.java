@@ -252,7 +252,7 @@ public class mSheep {
     }
     
     public void say(String text, Color color, long time) {
-        out.print(color(text, color));
+        out.println(color(text, color));
         out.flush();
         sleep(time);
     }
