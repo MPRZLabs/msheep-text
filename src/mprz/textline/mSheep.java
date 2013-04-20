@@ -44,9 +44,7 @@ public class mSheep {
         console.addCompleter(strCompleter);
         slowSay("MPRZ Tech Labs", Color.CYAN, 100);
         slowSay("Transmission begun.", Color.RED, 100);
-        slowSay("Loading [", Color.WHITE, 50, false);
-        slowSay("|||||||||||||||||||||||||]", Color.WHITE, 25);
-        sleep(2000);
+        loadingScreen();
     }
     
     public void stop() throws IOException {
@@ -300,5 +298,11 @@ public class mSheep {
     
     public String color(String text, Color color) {
         return color(text, color.fg());
+    }
+    
+    public void loadingScreen() {
+        slowSay("Loading [", Color.WHITE, 50, false);
+        slowSay("|||||||||||||||||||||||||]", Color.WHITE, 25);
+        sleep(2000);
     }
 }
