@@ -2,6 +2,7 @@ package mprz.textline;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jline.console.ConsoleReader;
@@ -14,12 +15,14 @@ import org.fusesource.jansi.Ansi.Color;
  * @author michcioperz <michcioperz@gmail.com>
  */
 public class mSheep {
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("mprz/textline/Bundle");
     
+    public Noteblock sound;
     public ConsoleReader console;
     public PrintWriter out;
     public GameObject[] inventory;
     public String[] effects;
-    public StringsCompleter strCompleter = new StringsCompleter("help", "inventory", "stop", "sheep", "effects", "lookover", "use", "ninja");
+    public StringsCompleter strCompleter = new StringsCompleter(bundle.getString("COMMAND_HELP"), bundle.getString("COMMAND_INVENTORY"), bundle.getString("COMMAND_STOP"), bundle.getString("COMMAND_SHEEP"), bundle.getString("COMMAND_EFFECTS"), bundle.getString("COMMAND_LOOKOVER"), bundle.getString("COMMAND_USE"), bundle.getString("COMMAND_NINJA"));
     public Location currentLoc;
     private boolean ninjaVisible = true;
     
@@ -36,23 +39,30 @@ public class mSheep {
     }
 
     private void init(int inventoryCount, int effectsCount) throws IOException {
+        sound = new Noteblock();
+        sound.setListenerPosition(50, 50);
         inventory = new GameObject[inventoryCount];
         effects = new String[effectsCount];
         console = new ConsoleReader();
         out = new PrintWriter(console.getOutput());
         console.setHandleUserInterrupt(true);
         console.addCompleter(strCompleter);
+        sound.playSound("/instr1.wav", 25, 50);
         slowSay("MPRZ Tech Labs", Color.CYAN, 100);
-        slowSay("Transmission begun.", Color.RED, 100);
+        sound.playSound("/instr1.wav", 75, 50);
+        slowSay(bundle.getString("ENGINE_INIT"), Color.RED, 100);
         loadingScreen();
     }
     
     public void stop() throws IOException {
         console.clearScreen();
         sheep();
+        sound.playSound("/instr1.wav", 25, 50);
         slowSay("MPRZ Tech Labs", Color.CYAN, 100);
-        slowSay("Transmission done.", Color.RED, 100);
+        sound.playSound("/instr1.wav", 75, 50);
+        slowSay(bundle.getString("ENGINE_STOP"), Color.RED, 100);
         console.shutdown();
+        sound.shutdown();
         System.exit(0);
     }
     
@@ -68,7 +78,7 @@ public class mSheep {
     }
     
     public void sheep() {
-        slowSay("mSHEEP Text Game Engine", 50);
+        slowSay(bundle.getString("ENGINE_NAME"), 50);
         say("", 50);
         slowSay("           /\\0", 25);
         slowSay("          /_ \\0", 25);
@@ -94,21 +104,21 @@ public class mSheep {
     public void run() throws IOException {
         String line;
         while (true) {
-            line = console.readLine(color("mprz: ", Color.GREEN) + color("", Color.WHITE));
+            line = console.readLine(color(bundle.getString("PROMPT"), Color.GREEN) + color("", Color.WHITE));
             console.setPrompt("");
-            if (line.startsWith("stop")) {
+            if (line.startsWith(bundle.getString("COMMAND_STOP"))) {
                 stop();
                 break;
-            } else if (line.startsWith("help")) {
-                slowSay(color("help", Color.MAGENTA) + color("           shows help", Color.WHITE), 25);
-                slowSay(color("stop", Color.MAGENTA) + color("           exits game", Color.WHITE), 25);
-                slowSay(color("inventory", Color.MAGENTA) + color("      lists your character's inventory", Color.WHITE), 25);
-                slowSay(color("effects", Color.MAGENTA) + color("        lists physical and psychical effects affecting your character", Color.WHITE), 25);
-                slowSay(color("sheep", Color.MAGENTA) + color("          uses " + color("the Mysterious Magic of Green Unicorns from Parallel Universe Where Edison Never Existed", Color.CYAN) + " to draw a black hole in time-space continuum fabric", Color.WHITE), 50);
-                slowSay(color("lookover", Color.MAGENTA) + color("       asks your character's eyes for things it sees", Color.WHITE), 25);
-                slowSay(color("use", Color.MAGENTA) + color("            lets you use an object from the inventory or the environment", Color.WHITE), 25);
-                slowSay(color("ninja", Color.MAGENTA) + color("          use the ninja abilities", Color.WHITE), 25);
-            } else if (line.startsWith("inventory")) {
+            } else if (line.startsWith(bundle.getString("COMMAND_HELP"))) {
+                slowSay(color(bundle.getString("COMMAND_HELP"), Color.MAGENTA) + color(bundle.getString("COMMAND_HELP_DESCRIPTION"), Color.WHITE), 25);
+                slowSay(color(bundle.getString("COMMAND_STOP"), Color.MAGENTA) + color(bundle.getString("COMMAND_STOP_DESCRIPTION"), Color.WHITE), 25);
+                slowSay(color(bundle.getString("COMMAND_INVENTORY"), Color.MAGENTA) + color(bundle.getString("COMMAND_INVENTORY_DESCRIPTION"), Color.WHITE), 25);
+                slowSay(color(bundle.getString("COMMAND_EFFECTS"), Color.MAGENTA) + color(bundle.getString("COMMAND_EFFECTS DESCRIPTION"), Color.WHITE), 25);
+                slowSay(color(bundle.getString("COMMAND_SHEEP"), Color.MAGENTA) + color(java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("mprz/textline/Bundle").getString("COMMAND_SHEEP_DESCRIPTION"), new Object[] {color("the Mysterious Magic of Green Unicorns from Parallel Universe Where Edison Never Existed", Color.CYAN)}), Color.WHITE), 50);
+                slowSay(color(bundle.getString("COMMAND_LOOKOVER"), Color.MAGENTA) + color(bundle.getString("COMMAND_LOOKOVER_DESCRIPTION"), Color.WHITE), 25);
+                slowSay(color(bundle.getString("COMMAND_USE"), Color.MAGENTA) + color(bundle.getString("COMMAND_USE_DESCRIPTION"), Color.WHITE), 25);
+                slowSay(color(bundle.getString("COMMAND_NINJA"), Color.MAGENTA) + color(bundle.getString("COMMAND_NINJA_DESCRIPTION"), Color.WHITE), 25);
+            } else if (line.startsWith(bundle.getString("COMMAND_INVENTORY"))) {
                 for (GameObject iter: inventory) {
                     if (iter != null) {
                         if (iter.isVisible()) {
@@ -116,18 +126,18 @@ public class mSheep {
                         }
                     }
                 }
-            } else if (line.startsWith("effects")) {
+            } else if (line.startsWith(bundle.getString("COMMAND_EFFECTS"))) {
                 if (!isNinjaVisible()) {
-                    slowSay("You are invisible...", 50);
+                    slowSay(bundle.getString("EFFECT_INVISIBILITY"), 50);
                 }
                 for (String iter: effects) {
                     if (iter != null) {
                         slowSay(iter, 50);
                     }
                 }
-            } else if (line.startsWith("sheep")) {
+            } else if (line.startsWith(bundle.getString("COMMAND_SHEEP"))) {
                 sheep();
-            } else if (line.startsWith("use")) {
+            } else if (line.startsWith(bundle.getString("COMMAND_USE"))) {
                 AggregateCompleter agComp = new AggregateCompleter();
                 for (GameObject iter: inventory) {
                     if (iter != null) {
@@ -143,7 +153,7 @@ public class mSheep {
                 }
                 console.removeCompleter(strCompleter);
                 console.addCompleter(agComp);
-                String useLine = console.readLine(color("mprz:use: ", Color.GREEN) + color("", Color.WHITE));
+                String useLine = console.readLine(color(bundle.getString("PROMPT_USE"), Color.GREEN) + color("", Color.WHITE));
                 console.setPrompt("");
                 boolean objUsed = false;
                 for (GameObject iter: inventory) {
@@ -163,20 +173,20 @@ public class mSheep {
                     }
                 }
                 if (!objUsed) {
-                    slowSay("Can't use something that's not on the list!", 50);
+                    slowSay(bundle.getString("COMMAND_USE_FAIL"), 50);
                 }
                 console.removeCompleter(agComp);
                 console.addCompleter(strCompleter);
-            } else if (line.startsWith("lookover")) {
+            } else if (line.startsWith(bundle.getString("COMMAND_LOOKOVER"))) {
                 currentLoc.onLookover();
-            } else if (line.startsWith("ninja")) {
+            } else if (line.startsWith(bundle.getString("COMMAND_NINJA"))) {
                 if (effects[0] == null) {
-                    StringsCompleter ninjAbilComp = new StringsCompleter("collide", "invisibility");
+                    StringsCompleter ninjAbilComp = new StringsCompleter(bundle.getString("COMMAND_NINJA_COLLIDE"), bundle.getString("COMMAND_NINJA_INVISIBILITY"));
                     console.removeCompleter(strCompleter);
                     console.addCompleter(ninjAbilComp);
-                    String abiLine = console.readLine(color("mprz:", Color.GREEN) + color("ninja: ", Color.MAGENTA) + color("", Color.WHITE));
+                    String abiLine = console.readLine(color(bundle.getString("PROMPT"), Color.GREEN) + color(bundle.getString("PROMPT_NINJA"), Color.MAGENTA) + color("", Color.WHITE));
                     console.setPrompt("");
-                    if (abiLine.startsWith("collide")) {
+                    if (abiLine.startsWith(bundle.getString("COMMAND_NINJA_COLLIDE"))) {
                         AggregateCompleter agComp = new AggregateCompleter();
                         for (GameObject iter: currentLoc.getObjectsList()) {
                             if (iter != null) {
@@ -186,7 +196,7 @@ public class mSheep {
                         }
                         console.removeCompleter(ninjAbilComp);
                         console.addCompleter(agComp);
-                        String useLine = console.readLine(color("mprz:", Color.GREEN) + color("ninja:", Color.MAGENTA) + color("collide: ", Color.BLUE) + color("", Color.WHITE));
+                        String useLine = console.readLine(color(bundle.getString("PROMPT"), Color.GREEN) + color(bundle.getString("PROMPT_NINJA"), Color.MAGENTA) + color(bundle.getString("PROMPT_NINJA_COLLIDE"), Color.BLUE) + color("", Color.WHITE));
                         console.setPrompt("");
                         boolean objUsed = false;
                         for (GameObject iter: inventory) {
@@ -206,20 +216,21 @@ public class mSheep {
                             }
                         }
                         if (!objUsed) {
-                            slowSay("Can't ninja-collide with something that's not on the list!", 50);
+                            slowSay(bundle.getString("COMMAND_NINJA_COLLIDE_FAIL"), 50);
                         }
                         console.removeCompleter(agComp);
                         console.addCompleter(strCompleter);
-                    } else if (abiLine.startsWith("invisibility")) {
+                    } else if (abiLine.startsWith(bundle.getString("COMMAND_NINJA_INVISIBILITY"))) {
+                        sound.playSound("/chem1.wav", 50, 50);
                         if (isNinjaVisible()) {
-                            slowSay("You disappear in the darkness...", 100);
+                            slowSay(bundle.getString("COMMAND_NINJA_INVISIBILITY_TURNON"), 100);
                         } else {
-                            slowSay("You re-appear from the darkness...", 100);
+                            slowSay(bundle.getString("COMMAND_NINJA_INVISIBILITY_TURNOFF"), 100);
                         }
                         setNinjaVisible(!isNinjaVisible());
                     }
                 } else {
-                    slowSay("Hungry ninja is not ninja.", Color.YELLOW, 50);
+                    slowSay(bundle.getString("COMMAND_NINJA_FAIL"), Color.YELLOW, 50);
                 }
             }
             sleep(500);
@@ -318,7 +329,7 @@ public class mSheep {
     }
     
     public void loadingScreen() {
-        slowSay("Loading [", Color.WHITE, 50, false);
+        slowSay(bundle.getString("LOADING"), Color.WHITE, 50, false);
         slowSay("|||||||||||||||||||||||||]", Color.WHITE, 25);
         sleep(2000);
     }

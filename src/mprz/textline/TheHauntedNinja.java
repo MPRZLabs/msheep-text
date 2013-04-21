@@ -1,6 +1,7 @@
 package mprz.textline;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.fusesource.jansi.Ansi.Color;
@@ -10,6 +11,7 @@ import org.fusesource.jansi.Ansi.Color;
  * @author michcioperz <michcioperz@gmail.com>
  */
 public class TheHauntedNinja {
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("mprz/textline/Bundle");
     mSheep sheep;
     LE7ELS le7els;
     
@@ -41,7 +43,7 @@ public class TheHauntedNinja {
 
                 @Override
                 public String getName() {
-                    return "Chocolate Factory";
+                    return bundle.getString("LOCATION_START_NAME");
                 }
 
                 @Override
@@ -58,35 +60,35 @@ public class TheHauntedNinja {
 
                         @Override
                         public String getName() {
-                            return "Chocolate producing machine";
+                            return bundle.getString("ITEM_MACHINE_NAME");
                         }
 
                         @Override
                         public void onUse() {
                             if (produced) {
-                                sheep.slowSay("There's no more cacao in the machine.", 50);
-                                sheep.slowSay(sheep.color("WHY IS THIS WORLD SO CRUEL?!", Color.YELLOW) + " you shout out loud, but not anyone and not anything seems to have heard it.", 50);
+                                sheep.slowSay(bundle.getString("ITEM_MACHINE_ONUSE2"), 50);
+                                sheep.slowSay(sheep.color(bundle.getString("ITEM_MACHINE_ONUSE3"), Color.YELLOW) + bundle.getString("ITEM_MACHINE_ONUSE4"), 50);
                             } else {
-                                sheep.slowSay("Awesome! You make a chocolate bar from remains of cacao resting in the machine!", 50);
+                                sheep.slowSay(bundle.getString("ITEM_MACHINE_ONUSE1"), 50);
                                 produced = true;
                                 sheep.inventory[0] = new GameObject() {
 
                                     @Override
                                     public String getName() {
-                                        return "Chocolate bar";
+                                        return bundle.getString("ITEM_CHOCOBAR_NAME");
                                     }
 
                                     @Override
                                     public void onUse() {
                                         sheep.inventory[0] = null;
                                         sheep.effects[0] = null;
-                                        sheep.slowSay("Hunger leaves you as you eat a medium quality chocolate bar.", 100);
+                                        sheep.slowSay(bundle.getString("ITEM_CHOCOBAR_ONUSE1"), 100);
                                         sheep.sleep(2000);
-                                        sheep.slowSay("Did you really think a chocolate bar made from remains of cacao resting in the machine will be as delicious as a chocolate bar made from fresh chocolate?", 100);
+                                        sheep.slowSay(bundle.getString("ITEM_CHOCOBAR_ONUSE2"), 100);
                                         sheep.sleep(4000);
-                                        sheep.slowSay("It really wasn't high quality, if there had been any quality.", 115);
-                                        sheep.slowSay("Looks like something in the chocolate makes you haunted by visions...", 130);
-                                        sheep.effects[1] = "You are haunted by weird visions.";
+                                        sheep.slowSay(bundle.getString("ITEM_CHOCOBAR_ONUSE3"), 115);
+                                        sheep.slowSay(bundle.getString("ITEM_CHOCOBAR_ONUSE4"), 130);
+                                        sheep.effects[1] = bundle.getString("EFFECT_VISIONS");
                                         sheep.sleep(2000);
                                         sheep.currentLoc.onVision();
                                     }
@@ -98,7 +100,7 @@ public class TheHauntedNinja {
 
                                     @Override
                                     public String getCodename() {
-                                        return "chocobar";
+                                        return bundle.getString("ITEM_CHOCOBAR_CODENAME");
                                     }
 
                                     @Override
@@ -108,7 +110,7 @@ public class TheHauntedNinja {
 
                                     @Override
                                     public void onNinjaCollide() {
-                                        sheep.slowSay("Don't waste chocolate!", Color.YELLOW, 100);
+                                        sheep.slowSay(bundle.getString("ITEM_CHOCOBAR_ONNINJACOLLIDE"), Color.YELLOW, 100);
                                     }
                                 };
                             }
@@ -121,7 +123,7 @@ public class TheHauntedNinja {
 
                         @Override
                         public String getCodename() {
-                            return "machine";
+                            return bundle.getString("ITEM_MACHINE_CODENAME");
                         }
 						
                         @Override
@@ -131,19 +133,19 @@ public class TheHauntedNinja {
 
                         @Override
                         public void onNinjaCollide() {
-                            sheep.slowSay("The machine doesn't seem to care much about any ninjas colliding with it.", 50);
+                            sheep.slowSay(bundle.getString("ITEM_MACHINE_ONNINJACOLLIDE"), 50);
                         }
                     };
                     map[1] = new GameObject() {
                         @Override
                         public String getName() {
-                            return "Door";
+                            return bundle.getString("ITEM_DOOR_NAME");
                         }
                     
                         @Override
                         public void onUse() {
                             if (sheep.effects[0] == null) {
-                                sheep.slowSay("The door is closed.", 50);
+                                sheep.slowSay(bundle.getString("ITEM_DOOR_ONUSE1"), 50);
                             }
                         }
                     
@@ -154,7 +156,7 @@ public class TheHauntedNinja {
                     
                         @Override
                         public String getCodename() {
-                            return "door";
+                            return bundle.getString("ITEM_DOOR_CODENAME");
                         }
                     
                         @Override
@@ -168,33 +170,33 @@ public class TheHauntedNinja {
 
                         @Override
                         public void onNinjaCollide() {
-                            sheep.slowSay("You decide to do use some ninja skills...", 115);
+                            sheep.slowSay(bundle.getString("ITEM_DOOR_ONNINJACOLLIDE1"), 115);
                             sheep.say("");
-                            sheep.slowSay("The distance between you and the door become closer and closer and...", 200);
+                            sheep.slowSay(bundle.getString("ITEM_DOOR_ONNINJACOLLIDE2"), 200);
                             sheep.currentLoc.onLeave();
                         }
                     };
-                    sheep.slowSay("You wake up in the chocolate factory.", 100);
-                    sheep.slowSay("All alone, with no one nearby.", 100);
-                    sheep.slowSay("On own survival.", 150);
+                    sheep.slowSay(bundle.getString("LOCATION_START_ONARRIVAL1"), 100);
+                    sheep.slowSay(bundle.getString("LOCATION_START_ONARRIVAL2"), 100);
+                    sheep.slowSay(bundle.getString("LOCATION_START_ONARRIVAL3"), 150);
                     sheep.say("", 1000);
-                    sheep.slowSay("THE HAUNTED NINJA: EPISODE 1", Color.CYAN, 250);
+                    sheep.slowSay(bundle.getString("LOCATION_START_EPTITLE"), Color.CYAN, 250);
                     sheep.say("", 1000);
-                    sheep.slowSay("Also, you feel a bit hungry.", 100);
-                    sheep.effects[0] = "You feel hungry.";
+                    sheep.slowSay(bundle.getString("LOCATION_START_ONARRIVAL4"), 100);
+                    sheep.effects[0] = bundle.getString("EFFECT_HUNGER");
                 }
 
                 @Override
                 public void onLookover() {
-                    sheep.slowSay("You see a chocolate machine nearby.", 50);
+                    sheep.slowSay(bundle.getString("LOCATION_START_ONLOOKOVER1"), 50);
                     if (map[1].isVisible()) {
-                        sheep.slowSay("Also, you can locate the door from your vision", 75);
+                        sheep.slowSay(bundle.getString("LOCATION_START_ONLOOKOVER1"), 75);
                     }
                 }
 
                 @Override
                 public void onLeave() {
-                    sheep.slowSay("TO BE CONTINUED...", Color.CYAN, 250);
+                    sheep.slowSay(bundle.getString("LOCSWITCH_TBC"), Color.CYAN, 250);
                     sheep.sleep(2000);
                     try {
                         sheep.console.clearScreen();
@@ -207,10 +209,10 @@ public class TheHauntedNinja {
 
                 @Override
                 public void onVision() {
-                    sheep.visionSay("You see yourself smashing through the wall nearby.");
-                    sheep.slowSay("After you get back to the real reality, you find out there is something on the wall.", 140);
+                    sheep.visionSay(bundle.getString("LOCATION_START_ONVISION1"));
+                    sheep.slowSay(bundle.getString("LOCATION_START_ONVISION2"), 140);
                     
-                    sheep.slowSay("Door!", Color.YELLOW, 200);
+                    sheep.slowSay(bundle.getString("LOCATION_START_ONVISION3"), Color.YELLOW, 200);
                 }
             };
             hallway = new Location() {
@@ -220,7 +222,7 @@ public class TheHauntedNinja {
 
                 @Override
                 public String getName() {
-                    return "Hallway";
+                    return bundle.getString("LOCATION_HALLWAY_NAME");
                 }
 
                 @Override
@@ -230,10 +232,10 @@ public class TheHauntedNinja {
 
                 @Override
                 public void onLookover() {
-                    sheep.say("Unsurprisingly, there are door on the right and door on the left, like in a normal hallway, right?", 1500);
-                    sheep.say("However, the hallway is way brighter than the production line, thanks to a lamp on the ceiling.", 1300);
+                    sheep.say(bundle.getString("LOCATION_HALLWAY_LOOKOVER1"), 1500);
+                    sheep.say(bundle.getString("LOCATION_HALLWAY_LOOKOVER2"), 1300);
                     if (visionDone) {
-                        sheep.say("And the walls are painted with your brother's blood. Ugh! What a creepy day...", 1100);
+                        sheep.say(bundle.getString("LOCATION_HALLWAY_LOOKOVER3"), 1100);
                     } else {
                         onVision();
                     }
@@ -242,12 +244,12 @@ public class TheHauntedNinja {
                 @Override
                 public void onVision() {
                     visionDone = true;
-                    sheep.visionSay("You see two masked gmans carrying some yellow person");
-                    sheep.say("After you get back to the real reality, you find out there is something on the wall.", 1200);
-                    sheep.say("YELLOW BLOOD!", Color.YELLOW, 3000);
-                    sheep.say("No! They took him!", Color.YELLOW, 1000);
-                    sheep.say("Bro! Where are you? Can you hear me?", Color.YELLOW, 2000);
-                    sheep.say("You only hear quiet robotic \"Hello, friend!\" voice and decide to shout no more...", 1000);
+                    sheep.visionSay(bundle.getString("LOCATION_HALLWAY_ONVISION1"));
+                    sheep.say(bundle.getString("LOCATION_HALLWAY_ONVISION2"), 1200);
+                    sheep.say(bundle.getString("LOCATION_HALLWAY_ONVISION3"), Color.YELLOW, 3000);
+                    sheep.say(bundle.getString("LOCATION_HALLWAY_ONVISION4"), Color.YELLOW, 1000);
+                    sheep.say(bundle.getString("LOCATION_HALLWAY_ONVISION5"), Color.YELLOW, 2000);
+                    sheep.say(bundle.getString("LOCATION_HALLWAY_ONVISION6"), 1000);
                 }
 
                 @Override
@@ -258,12 +260,12 @@ public class TheHauntedNinja {
 
                         @Override
                         public String getName() {
-                            return "Lamp";
+                            return bundle.getString("ITEM_LAMP_NAME");
                         }
 
                         @Override
                         public void onUse() {
-                            sheep.say("That's too high... Let's use some ninja skills...", Color.YELLOW, 1500);
+                            sheep.say(bundle.getString("ITEM_LAMP_ONUSE"), Color.YELLOW, 1500);
                         }
 
                         @Override
@@ -273,7 +275,7 @@ public class TheHauntedNinja {
 
                         @Override
                         public String getCodename() {
-                            return "lamp";
+                            return bundle.getString("ITEM_LAMP_CODENAME");
                         }
 
                         @Override
@@ -283,13 +285,13 @@ public class TheHauntedNinja {
 
                         @Override
                         public void onNinjaCollide() {
-                            sheep.say("Things happen like with the door, despite that it takes you a lot less time.", 2000);
-                            sheep.say("Anyway, that lamp broke and you found a bunch of keys!", 1000);
+                            sheep.say(bundle.getString("ITEM_LAMP_ONNINJACOLLIDE1"), 2000);
+                            sheep.say(bundle.getString("ITEM_LAMP_ONNINJACOLLIDE2"), 1000);
                             sheep.inventory[1] = new GameObject() {
 
                                 @Override
                                 public String getName() {
-                                    return "Bunch of keys";
+                                    return bundle.getString("ITEM_KEYS_NAME");
                                 }
 
                                 @Override
@@ -304,7 +306,7 @@ public class TheHauntedNinja {
 
                                 @Override
                                 public String getCodename() {
-                                    return "keys";
+                                    return bundle.getString("ITEM_KEYS_CODENAME");
                                 }
 
                                 @Override
@@ -314,7 +316,7 @@ public class TheHauntedNinja {
 
                                 @Override
                                 public void onNinjaCollide() {
-                                    sheep.say("That's simply impossible.", 250);
+                                    sheep.say(bundle.getString("ITEM_KEYS_ONNINJACOLLIDE"), 250);
                                 }
                             };
                         }
@@ -326,7 +328,7 @@ public class TheHauntedNinja {
 
                         @Override
                         public String getName() {
-                            return "Door on the left";
+                            return bundle.getString("ITEM_DOOR1_NAME");
                         }
 
                         @Override
@@ -341,7 +343,7 @@ public class TheHauntedNinja {
 
                         @Override
                         public String getCodename() {
-                            return "door1";
+                            return bundle.getString("ITEM_DOOR1_CODENAME");
                         }
 
                         @Override
@@ -361,7 +363,7 @@ public class TheHauntedNinja {
 
                         @Override
                         public String getName() {
-                            return "Door on the right";
+                            return bundle.getString("ITEM_DOOR2_NAME");
                         }
 
                         @Override
@@ -376,7 +378,7 @@ public class TheHauntedNinja {
 
                         @Override
                         public String getCodename() {
-                            return "door2";
+                            return bundle.getString("ITEM_DOOR2_CODENAME");
                         }
 
                         @Override
