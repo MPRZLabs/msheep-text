@@ -116,7 +116,7 @@ public class mSheep {
                 slowSay(color(bundle.getString("COMMAND_HELP"), Color.MAGENTA) + color(bundle.getString("COMMAND_HELP_DESCRIPTION"), Color.WHITE), 25);
                 slowSay(color(bundle.getString("COMMAND_STOP"), Color.MAGENTA) + color(bundle.getString("COMMAND_STOP_DESCRIPTION"), Color.WHITE), 25);
                 slowSay(color(bundle.getString("COMMAND_INVENTORY"), Color.MAGENTA) + color(bundle.getString("COMMAND_INVENTORY_DESCRIPTION"), Color.WHITE), 25);
-                slowSay(color(bundle.getString("COMMAND_EFFECTS"), Color.MAGENTA) + color(bundle.getString("COMMAND_EFFECTS DESCRIPTION"), Color.WHITE), 25);
+                slowSay(color(bundle.getString("COMMAND_EFFECTS"), Color.MAGENTA) + color(bundle.getString("COMMAND_EFFECTS_DESCRIPTION"), Color.WHITE), 25);
                 slowSay(color(bundle.getString("COMMAND_SHEEP"), Color.MAGENTA) + color(java.text.MessageFormat.format(java.util.ResourceBundle.getBundle("mprz/textline/Bundle").getString("COMMAND_SHEEP_DESCRIPTION"), new Object[] {color("the Mysterious Magic of Green Unicorns from Parallel Universe Where Edison Never Existed", Color.CYAN)}), Color.WHITE), 50);
                 slowSay(color(bundle.getString("COMMAND_LOOKOVER"), Color.MAGENTA) + color(bundle.getString("COMMAND_LOOKOVER_DESCRIPTION"), Color.WHITE), 25);
                 slowSay(color(bundle.getString("COMMAND_USE"), Color.MAGENTA) + color(bundle.getString("COMMAND_USE_DESCRIPTION"), Color.WHITE), 25);
