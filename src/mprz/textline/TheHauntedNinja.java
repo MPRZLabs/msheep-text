@@ -23,7 +23,7 @@ public class TheHauntedNinja {
         try {
             TheHauntedNinja game = new TheHauntedNinja();
             game.sheep.run();
-        } catch (InterruptedException | IOException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(TheHauntedNinja.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -64,18 +64,10 @@ public class TheHauntedNinja {
                         @Override
                         public void onUse() {
                             if (produced) {
-                                sheep.out.println("There's no more cacao in the machine.");
-                                sheep.out.flush();
-                                try {
-                                    Thread.sleep(500);
-                                } catch (InterruptedException ex) {
-                                    Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                                sheep.out.println(sheep.color("WHY IS THIS WORLD SO CRUEL?!", Color.YELLOW) + " you shout out loud, but not anyone and not anything seems to have heard it.");
-                                sheep.out.flush();
+                                sheep.slowSay("There's no more cacao in the machine.", 50);
+                                sheep.slowSay(sheep.color("WHY IS THIS WORLD SO CRUEL?!", Color.YELLOW) + " you shout out loud, but not anyone and not anything seems to have heard it.", 50);
                             } else {
-                                sheep.out.println("Awesome! You make a chocolate bar using remains of cacao resting in the machine!");
-                                sheep.out.flush();
+                                sheep.slowSay("Awesome! You make a chocolate bar from remains of cacao resting in the machine!", 50);
                                 produced = true;
                                 sheep.inventory[0] = new GameObject() {
 
@@ -88,23 +80,14 @@ public class TheHauntedNinja {
                                     public void onUse() {
                                         sheep.inventory[0] = null;
                                         sheep.effects[0] = null;
-                                        sheep.out.println("Hunger leaves you as you eat a medium quality chocolate bar.");
-                                        sheep.out.println("Did you really think a chocolate bar made from remains of cacao resting in the machine will be as delicious as a chocolate bar made from fresh chocolate?");
-                                        sheep.out.flush();
-                                        try {
-                                            Thread.sleep(2000);
-                                        } catch (InterruptedException ex) {
-                                            Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
-                                        sheep.out.println("It really wasn't high quality, if you can call it quality.");
-                                        sheep.out.println("Looks like something in the chocolate makes you haunted by visions...");
-                                        sheep.out.flush();
-                                        try {
-                                            Thread.sleep(2000);
-                                        } catch (InterruptedException ex) {
-                                            Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
+                                        sheep.slowSay("Hunger leaves you as you eat a medium quality chocolate bar.", 100);
+                                        sheep.sleep(2000);
+                                        sheep.slowSay("Did you really think a chocolate bar made from remains of cacao resting in the machine will be as delicious as a chocolate bar made from fresh chocolate?", 100);
+                                        sheep.sleep(4000);
+                                        sheep.slowSay("It really wasn't high quality, if there had been any quality.", 115);
+                                        sheep.slowSay("Looks like something in the chocolate makes you haunted by visions...", 130);
                                         sheep.effects[1] = "You are haunted by weird visions.";
+                                        sheep.sleep(2000);
                                         sheep.currentLoc.onVision();
                                     }
 
@@ -125,8 +108,7 @@ public class TheHauntedNinja {
 
                                     @Override
                                     public void onNinjaCollide() {
-                                        sheep.out.println("Don't waste chocolate!");
-                                        sheep.out.flush();
+                                        sheep.slowSay("Don't waste chocolate!", Color.YELLOW, 100);
                                     }
                                 };
                             }
@@ -149,8 +131,7 @@ public class TheHauntedNinja {
 
                         @Override
                         public void onNinjaCollide() {
-                            sheep.out.println("The machine doesn't seem to care much about any ninjas colliding with it.");
-                            sheep.out.flush();
+                            sheep.slowSay("The machine doesn't seem to care much about any ninjas colliding with it.", 50);
                         }
                     };
                     map[1] = new GameObject() {
@@ -162,8 +143,7 @@ public class TheHauntedNinja {
                         @Override
                         public void onUse() {
                             if (sheep.effects[0] == null) {
-                                sheep.out.println("The door is closed.");
-                                sheep.out.flush();
+                                sheep.slowSay("The door is closed.", 50);
                             }
                         }
                     
@@ -188,58 +168,49 @@ public class TheHauntedNinja {
 
                         @Override
                         public void onNinjaCollide() {
-                            sheep.out.println("You decide to do use some ninja skills...");
-                            sheep.out.println("The distance between you and the door become closer and closer and...");
-                            sheep.out.flush();
-                            try {
-                                Thread.sleep(3000);
-                            } catch (InterruptedException ex) {
-                                Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
-                            }
+                            sheep.slowSay("You decide to do use some ninja skills...", 115);
+                            sheep.say("");
+                            sheep.slowSay("The distance between you and the door become closer and closer and...", 200);
                             sheep.currentLoc.onLeave();
                         }
                     };
-                    sheep.out.println("You wake up in the chocolate factory.");
-                    sheep.out.println("All alone, with no one nearby.");
-                    sheep.out.println("On own survival.");
-                    sheep.out.println(sheep.color("THE HAUNTED NINJA: EPISODE 1", Color.CYAN));
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    sheep.out.flush();
-                    sheep.out.println("Also, you feel a bit hungry.");
+                    sheep.slowSay("You wake up in the chocolate factory.", 100);
+                    sheep.slowSay("All alone, with no one nearby.", 100);
+                    sheep.slowSay("On own survival.", 150);
+                    sheep.say("", 1000);
+                    sheep.slowSay("THE HAUNTED NINJA: EPISODE 1", Color.CYAN, 250);
+                    sheep.say("", 1000);
+                    sheep.slowSay("Also, you feel a bit hungry.", 100);
                     sheep.effects[0] = "You feel hungry.";
-                    sheep.out.flush();
                 }
 
                 @Override
                 public void onLookover() {
-                    sheep.out.println("You see a chocolate machine nearby.");
+                    sheep.slowSay("You see a chocolate machine nearby.", 50);
                     if (map[1].isVisible()) {
-                        sheep.out.println("Also, you can locate the door from your vision");
+                        sheep.slowSay("Also, you can locate the door from your vision", 75);
                     }
                 }
 
                 @Override
                 public void onLeave() {
+                    sheep.slowSay("TO BE CONTINUED...", Color.CYAN, 250);
+                    sheep.sleep(2000);
                     try {
-                        sheep.out.println(sheep.color("TO BE CONTINUED...",Color.CYAN));
-                        sheep.out.flush();
-                        Thread.sleep(3000);
-                        sheep.loadLocation(hallway);
-                    } catch (InterruptedException ex) {
+                        sheep.console.clearScreen();
+                    } catch (IOException ex) {
                         Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                    sheep.loadingScreen();
+                    sheep.loadLocation(hallway);
                 }
 
                 @Override
                 public void onVision() {
-                    sheep.out.println(sheep.color("You see yourself smashing through the wall nearby. That's it, you're haunted by visions, right?", Color.RED));
-                    sheep.out.println("After you get back to the real reality, you find out there is something on the wall.");
+                    sheep.visionSay("You see yourself smashing through the wall nearby.");
+                    sheep.slowSay("After you get back to the real reality, you find out there is something on the wall.", 140);
                     
-                    sheep.out.println(sheep.color("Door!", Color.YELLOW));
+                    sheep.slowSay("Door!", Color.YELLOW, 200);
                 }
             };
             hallway = new Location() {
@@ -259,44 +230,24 @@ public class TheHauntedNinja {
 
                 @Override
                 public void onLookover() {
-                    sheep.out.println("Unsurprisingly, there are door on the right and door on the left, like in a normal hallway, right?");
-                    sheep.out.println("However, the hallway is way brighter than the production line, thanks to a lamp on the ceiling.");
+                    sheep.say("Unsurprisingly, there are door on the right and door on the left, like in a normal hallway, right?", 1500);
+                    sheep.say("However, the hallway is way brighter than the production line, thanks to a lamp on the ceiling.", 1300);
                     if (visionDone) {
-                        sheep.out.println("And the walls are painted with your brother's blood. Ugh! What a creepy day...");
+                        sheep.say("And the walls are painted with your brother's blood. Ugh! What a creepy day...", 1100);
                     } else {
                         onVision();
                     }
-                    sheep.out.flush();
                 }
 
                 @Override
                 public void onVision() {
                     visionDone = true;
-                    sheep.out.println(sheep.color("You see two masked gmans carrying some yellow person", Color.RED));
-                    sheep.out.println("After you get back to the real reality, you find out there is something on the wall.");
-                    sheep.out.println(sheep.color("YELLOW BLOOD!", Color.YELLOW));
-                    sheep.out.flush();
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    sheep.out.println(sheep.color("No! They took him!", Color.YELLOW));
-                    sheep.out.flush();
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    sheep.out.println(sheep.color("Bro! Where are you? Can you hear me?", Color.YELLOW));
-                    sheep.out.flush();
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    sheep.out.println("You only hear quiet robotic \"Hello, friend!\" voice and decide to shout no more...");
-                    sheep.out.flush();
+                    sheep.visionSay("You see two masked gmans carrying some yellow person");
+                    sheep.say("After you get back to the real reality, you find out there is something on the wall.", 1200);
+                    sheep.say("YELLOW BLOOD!", Color.YELLOW, 3000);
+                    sheep.say("No! They took him!", Color.YELLOW, 1000);
+                    sheep.say("Bro! Where are you? Can you hear me?", Color.YELLOW, 2000);
+                    sheep.say("You only hear quiet robotic \"Hello, friend!\" voice and decide to shout no more...", 1000);
                 }
 
                 @Override
@@ -312,8 +263,7 @@ public class TheHauntedNinja {
 
                         @Override
                         public void onUse() {
-                            sheep.out.println(sheep.color("That's too high... Let's use some ninja skills...", Color.YELLOW));
-                            sheep.out.flush();
+                            sheep.say("That's too high... Let's use some ninja skills...", Color.YELLOW, 1500);
                         }
 
                         @Override
@@ -333,13 +283,9 @@ public class TheHauntedNinja {
 
                         @Override
                         public void onNinjaCollide() {
-                            sheep.out.println("Things happen like with the door, despite that it takes you a lot less time.");
-                            sheep.out.println("Anyway, that lamp broke and you found a bunch of keys!");
-                            sheep.out.flush();
+                            sheep.say("Things happen like with the door, despite that it takes you a lot less time.", 2000);
+                            sheep.say("Anyway, that lamp broke and you found a bunch of keys!", 1000);
                             sheep.inventory[1] = new GameObject() {
-                                
-                                boolean usedOnDoor1 = false;
-                                boolean usedOnDoor2 = false;
 
                                 @Override
                                 public String getName() {
@@ -363,19 +309,20 @@ public class TheHauntedNinja {
 
                                 @Override
                                 public boolean isVisible() {
-                                    return !(usedOnDoor1 && usedOnDoor2);
+                                    return true;
                                 }
 
                                 @Override
                                 public void onNinjaCollide() {
-                                    sheep.out.println("That's simply impossible.");
-                                    sheep.out.flush();
+                                    sheep.say("That's simply impossible.", 250);
                                 }
                             };
                         }
                     };
                     
                     map[1] = new GameObject() {
+                        
+                        boolean closed = true;
 
                         @Override
                         public String getName() {
@@ -409,6 +356,8 @@ public class TheHauntedNinja {
                     };
                     
                     map[2] = new GameObject() {
+                        
+                        boolean closed;
 
                         @Override
                         public String getName() {
@@ -445,11 +394,10 @@ public class TheHauntedNinja {
                 @Override
                 public void onLeave() {
                     try {
-                        sheep.out.println(sheep.color("TO BE CONTINUED...",Color.CYAN));
-                        sheep.out.flush();
-                        Thread.sleep(3000);
+                        sheep.slowSay("TO BE CONTINUED...", Color.CYAN, 250);
+                        sheep.sleep(2000);
                         sheep.stop();
-                    } catch (IOException | InterruptedException ex) {
+                    } catch (IOException ex) {
                         Logger.getLogger(LE7ELS.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
