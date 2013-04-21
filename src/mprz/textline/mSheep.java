@@ -95,6 +95,7 @@ public class mSheep {
         String line;
         while (true) {
             line = console.readLine(color("mprz: ", Color.GREEN) + color("", Color.WHITE));
+            console.setPrompt("");
             if (line.startsWith("stop")) {
                 stop();
                 break;
@@ -143,6 +144,7 @@ public class mSheep {
                 console.removeCompleter(strCompleter);
                 console.addCompleter(agComp);
                 String useLine = console.readLine(color("mprz:use: ", Color.GREEN) + color("", Color.WHITE));
+                console.setPrompt("");
                 boolean objUsed = false;
                 for (GameObject iter: inventory) {
                     if (iter != null && !objUsed) {
@@ -173,6 +175,7 @@ public class mSheep {
                     console.removeCompleter(strCompleter);
                     console.addCompleter(ninjAbilComp);
                     String abiLine = console.readLine(color("mprz:", Color.GREEN) + color("ninja: ", Color.MAGENTA) + color("", Color.WHITE));
+                    console.setPrompt("");
                     if (abiLine.startsWith("collide")) {
                         AggregateCompleter agComp = new AggregateCompleter();
                         for (GameObject iter: currentLoc.getObjectsList()) {
@@ -184,6 +187,7 @@ public class mSheep {
                         console.removeCompleter(ninjAbilComp);
                         console.addCompleter(agComp);
                         String useLine = console.readLine(color("mprz:", Color.GREEN) + color("ninja:", Color.MAGENTA) + color("collide: ", Color.BLUE) + color("", Color.WHITE));
+                        console.setPrompt("");
                         boolean objUsed = false;
                         for (GameObject iter: inventory) {
                             if (iter != null && !objUsed) {
@@ -263,6 +267,19 @@ public class mSheep {
         if (ln) {
             out.println();
         }
+    }
+    
+    public void visionSay(String text) {
+        String visText = "";
+        for (int i = 0; i < text.length(); i++) {
+            visText += color(text.substring(i, i + 1), randomColor());
+        }
+        slowSay(visText, 100);
+    }
+    
+    public Color randomColor() {
+        java.util.Random rand = new java.util.Random();
+        return Color.values()[rand.nextInt(Color.values().length)];
     }
     
     public void sleep(long millis) {
