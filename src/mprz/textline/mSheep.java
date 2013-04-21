@@ -61,6 +61,9 @@ public class mSheep {
         slowSay("MPRZ Tech Labs", Color.CYAN, 100);
         sound.playSound("/instr1.wav", 75, 50);
         slowSay(bundle.getString("ENGINE_STOP"), Color.RED, 100);
+        sleep(1000);
+        say("");
+        console.clearScreen();
         console.shutdown();
         sound.shutdown();
         System.exit(0);
