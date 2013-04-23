@@ -1,17 +1,29 @@
 package pl.ijestfajnie.msheep_text;
 
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class Translator {
     
-    private ResourceBundle base = ResourceBundle.getBundle("pl/ijestfajnie/msheep_text/EngineBasics");
+    private List<ResourceBundle> bundles;
     
-    public String getBasicString(String key) {
-        return base.getString(key);
+    public String getString(String key) {
+        while (bundles.iterator().hasNext()) {
+            ResourceBundle current = bundles.iterator().next();
+            if (current.containsKey(key)) {
+                return current.getString(key);
+            }
+        }
+        return null;
+    }
+    
+    public void addBundle(ResourceBundle bundle) {
+        bundles.add(bundle);
     }
     
     //<editor-fold defaultstate="collapsed" desc="Singleton">
     private Translator() {
+        addBundle(ResourceBundle.getBundle("pl/ijestfajnie/msheep_text/EngineBasics"));
     }
     
     public static Translator getInstance() {

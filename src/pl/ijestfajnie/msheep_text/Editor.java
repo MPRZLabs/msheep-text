@@ -23,6 +23,10 @@ public class Editor {
         return commands;
     }
     
+    public Author getCommand(String command) {
+        return commands.get(command);
+    }
+    
     public void addCommand(String command, Author parser) {
         commands.put(command, parser);
     }
