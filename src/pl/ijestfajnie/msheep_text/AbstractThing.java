@@ -19,8 +19,6 @@ public abstract class AbstractThing implements Thing {
     }
 
     @Override
-    public void onUse() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public abstract void onUse();
     
 }
